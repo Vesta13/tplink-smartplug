@@ -35,20 +35,21 @@ def validIP(ip):
 
 # Predefined Smart Plug Commands
 # For a full list of commands, consult tplink_commands.txt
-commands = {'info'     : '{"system":{"get_sysinfo":{}}}',
-			'on'       : '{"system":{"set_relay_state":{"state":1}}}',
-			'off'      : '{"system":{"set_relay_state":{"state":0}}}',
-			'cloudinfo': '{"cnCloud":{"get_info":{}}}',
-			'wlanscan' : '{"netif":{"get_scaninfo":{"refresh":0}}}',
-			'time'     : '{"time":{"get_time":{}}}',
-			'schedule' : '{"schedule":{"get_rules":{}}}',
-			'countdown': '{"count_down":{"get_rules":{}}}',
-			'antitheft': '{"anti_theft":{"get_rules":{}}}',
-			'reboot'   : '{"system":{"reboot":{"delay":1}}}',
-			'reset'    : '{"system":{"reset":{"delay":1}}}',
-			
-			#01/04/2017 command to identify relay info
-			'relay_state'     : '{"system":{"get_sysinfo":{}}}',
+commands = {'info'        : '{"system":{"get_sysinfo":{}}}',
+			'on'          : '{"system":{"set_relay_state":{"state":1}}}',
+			'off'         : '{"system":{"set_relay_state":{"state":0}}}',
+			'cloudinfo'   : '{"cnCloud":{"get_info":{}}}',
+			'wlanscan'    : '{"netif":{"get_scaninfo":{"refresh":0}}}',
+			'time'        : '{"time":{"get_time":{}}}',
+			'schedule'    : '{"schedule":{"get_rules":{}}}',
+			'countdown'   : '{"count_down":{"get_rules":{}}}',
+			'antitheft'   : '{"anti_theft":{"get_rules":{}}}',
+			'reboot'      : '{"system":{"reboot":{"delay":1}}}',
+			'reset'       : '{"system":{"reset":{"delay":1}}}',
+            'relay_state' : '{"system":{"get_sysinfo":{}}}',
+            'nightmodeon' : '{"system":{"set_led_off":{"off":1}}}',
+            'nightmodeoff' : '{"system":{"set_led_off":{"off":0}}}',
+
 }
 
 # Encryption and Decryption of TP-Link Smart Home Protocol
