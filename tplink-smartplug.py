@@ -21,6 +21,7 @@
 #
 import socket
 import argparse
+import json
 
 version = 0.1
 
@@ -44,7 +45,10 @@ commands = {'info'     : '{"system":{"get_sysinfo":{}}}',
 			'countdown': '{"count_down":{"get_rules":{}}}',
 			'antitheft': '{"anti_theft":{"get_rules":{}}}',
 			'reboot'   : '{"system":{"reboot":{"delay":1}}}',
-			'reset'    : '{"system":{"reset":{"delay":1}}}'
+			'reset'    : '{"system":{"reset":{"delay":1}}}',
+			
+			#01/04/2017 command to identify relay info
+			'relay_state'     : '{"system":{"get_sysinfo":{}}}',
 }
 
 # Encryption and Decryption of TP-Link Smart Home Protocol
@@ -66,6 +70,15 @@ def decrypt(string):
 		key = ord(i) 
 		result += chr(a)
 	return result
+	
+#01/04/2017 parse relay state
+def parserelay_state(string): 
+	result = ""
+	jsonObj = json.loads(string)
+	return jsonObj['system']['get_sysinfo']['relay_state']
+	
+	
+	
 
 # Parse commandline arguments
 parser = argparse.ArgumentParser(description="TP-Link Wi-Fi Smart Plug Client v" + str(version))
@@ -92,8 +105,15 @@ try:
 	sock_tcp.send(encrypt(cmd))
 	data = sock_tcp.recv(2048)
 	sock_tcp.close()
+
+	if args.command  != "relay_state":
+		print "Sent:     ", cmd
+		print "Received: ", decrypt(data[4:])
+	else :
+		print parserelay_state(decrypt(data[4:]))
 	
-	print "Sent:     ", cmd
-	print "Received: ", decrypt(data[4:])
+#01/04/2017 add parse result info for get relay stat directly 0 off 1 on
+
+	
 except socket.error:
 	quit("Cound not connect to host " + ip + ":" + str(port))
