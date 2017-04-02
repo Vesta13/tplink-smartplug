@@ -1,6 +1,7 @@
 # TP-Link WiFi SmartPlug Client
 
-Fork from https://github.com/softScheck/tplink-smartplug
+Forked from https://github.com/softScheck/tplink-smartplug
+Thank's to softScheck GmbH for this python client
 
 - add nightmode for led
 - add return for relay_state 0 on 1 off
