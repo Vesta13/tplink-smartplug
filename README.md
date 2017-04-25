@@ -7,6 +7,9 @@ Thank's to softScheck GmbH for this python client
 - add return for relay_state 0 on 1 off
 - add return for currentRunTime in second
 - add return for currentPower in w
+- add return for voltage in v
+- add total current dailyConsumption in kwh
+
 
 ## tplink-smartplug.py ##
 
@@ -52,6 +55,8 @@ Provide the target IP using `-t` and a command to send using either `-c` or `-j`
 | currentRunTime | return current time in second since  |
 |                | the relay_state is 1                 |
 |currentPower    | return currentPower in w             |
+|voltage         | return current Voltage               |
+|dailyConsumption| retunr current daily consumption Kwh |
 
 More advanced commands such as creating or editing rules can be issued using the `-j` flag by providing the full JSON string for the command. Please consult [tplink-smarthome-commands.txt](tplink-smarthome-commands.txt) for a comprehensive list of commands.
 
