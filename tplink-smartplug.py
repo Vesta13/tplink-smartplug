@@ -35,21 +35,26 @@ def validIP(ip):
 
 # Predefined Smart Plug Commands
 # For a full list of commands, consult tplink_commands.txt
-commands = {'info'        : '{"system":{"get_sysinfo":{}}}',
-			'on'          : '{"system":{"set_relay_state":{"state":1}}}',
-			'off'         : '{"system":{"set_relay_state":{"state":0}}}',
-			'cloudinfo'   : '{"cnCloud":{"get_info":{}}}',
-			'wlanscan'    : '{"netif":{"get_scaninfo":{"refresh":0}}}',
-			'time'        : '{"time":{"get_time":{}}}',
-			'schedule'    : '{"schedule":{"get_rules":{}}}',
-			'countdown'   : '{"count_down":{"get_rules":{}}}',
-			'antitheft'   : '{"anti_theft":{"get_rules":{}}}',
-			'reboot'      : '{"system":{"reboot":{"delay":1}}}',
-			'reset'       : '{"system":{"reset":{"delay":1}}}',
-            'relay_state' : '{"system":{"get_sysinfo":{}}}',
-            'nightmodeon' : '{"system":{"set_led_off":{"off":1}}}',
-            'nightmodeoff' : '{"system":{"set_led_off":{"off":0}}}',
-
+commands = {'info'             : '{"system":{"get_sysinfo":{}}}',
+			'on'               : '{"system":{"set_relay_state":{"state":1}}}',
+			'off'              : '{"system":{"set_relay_state":{"state":0}}}',
+			'cloudinfo'        : '{"cnCloud":{"get_info":{}}}',
+			'wlanscan'         : '{"netif":{"get_scaninfo":{"refresh":0}}}',
+			'time'             : '{"time":{"get_time":{}}}',
+			'schedule'         : '{"schedule":{"get_rules":{}}}',
+			'countdown'        : '{"count_down":{"get_rules":{}}}',
+			'antitheft'        : '{"anti_theft":{"get_rules":{}}}',
+			'reboot'           : '{"system":{"reboot":{"delay":1}}}',
+			'reset'            : '{"system":{"reset":{"delay":1}}}',
+            'relay_state'      : '{"system":{"get_sysinfo":{}}}',
+            'nightmodeon'      : '{"system":{"set_led_off":{"off":1}}}',
+            'nightmodeoff'     : '{"system":{"set_led_off":{"off":0}}}',
+            'realtimeVoltage'  : '{"emeter":{"get_realtime":{}}}',
+            'EMeterVGain'      : '{"emeter":{"get_vgain_igain":{}}}',
+            'currentRunTime'   : '{"system":{"get_sysinfo":{}}}',
+            'currentPower'     : '{"emeter":{"get_realtime":{}}}',
+            'voltage'          : '{"emeter":{"get_realtime":{}}}',
+            'dailyConsumption' : '{"emeter":{"get_realtime":{}}}'
 }
 
 # Encryption and Decryption of TP-Link Smart Home Protocol
@@ -72,11 +77,13 @@ def decrypt(string):
 		result += chr(a)
 	return result
 	
+
 #01/04/2017 parse relay state
-def parserelay_state(string): 
+def parsecurrentRunTime(string):
 	result = ""
 	jsonObj = json.loads(string)
-	return jsonObj['system']['get_sysinfo']['relay_state']
+	print json.loads(string)['system']['get_sysinfo']['on_time']
+	return jsonObj['system']['get_sysinfo']['on_time']
 	
 	
 	
@@ -107,12 +114,22 @@ try:
 	data = sock_tcp.recv(2048)
 	sock_tcp.close()
 
-	if args.command  != "relay_state":
+	if args.command  == "relay_state":
+		print json.loads(decrypt(data[4:]))['system']['get_sysinfo']['relay_state']
+	elif args.command  == "currentRunTime":
+		print json.loads(decrypt(data[4:]))['system']['get_sysinfo']['on_time']
+	elif args.command  == "currentPower":
+		print json.loads(decrypt(data[4:]))['emeter']['get_realtime']['power']
+	elif args.command  == "voltage":
+		print json.loads(decrypt(data[4:]))['emeter']['get_realtime']['voltage']
+	elif args.command  == "dailyConsumption":
+		print json.loads(decrypt(data[4:]))['emeter']['get_realtime']['total']
+
+
+	else :
 		print "Sent:     ", cmd
 		print "Received: ", decrypt(data[4:])
-	else :
-		print parserelay_state(decrypt(data[4:]))
-	
+
 #01/04/2017 add parse result info for get relay stat directly 0 off 1 on
 
 	
