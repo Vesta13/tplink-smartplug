@@ -5,6 +5,7 @@ Thank's to softScheck GmbH for this python client
 
 - add nightmode for led
 - add return for relay_state 0 on 1 off
+- add return for currentRunTime in second
 
 ## tplink-smartplug.py ##
 
@@ -31,22 +32,24 @@ A full list of commands is provided in [tplink-smarthome-commands.txt](tplink-sm
 
 Provide the target IP using `-t` and a command to send using either `-c` or `-j`. Commands for the `-c` flag:
 
-| Command      | Description                          |
-|--------------|--------------------------------------|
-| on           | Turns on the plug                    |
-| off          | Turns off the plug                   |
-| system       | Returns device info                  |
-| cloudinfo    | Returns cloud connectivity info      |
-| wlanscan     | Scan for nearby access points        |
-| time         | Returns the system time              |
-| schedule     | Lists configured schedule rules      |
-| countdown    | Lists configured countdown rules     |
-| antitheft    | Lists configured antitheft rules     |
-| reboot       | Reboot the device                    |
-| reset        | Reset the device to factory settings |
-| relay_state  | 0 off 1 on                           |
-| nightmodeon  | Turn on the plug led                 |
-| nightmodeoff | Turn offthe plug led                 |
+| Command        | Description                          |
+|----------------|--------------------------------------|
+| on             | Turns on the plug                    |
+| off            | Turns off the plug                   |
+| system         | Returns device info                  |
+| cloudinfo      | Returns cloud connectivity info      |
+| wlanscan       | Scan for nearby access points        |
+| time           | Returns the system time              |
+| schedule       | Lists configured schedule rules      |
+| countdown      | Lists configured countdown rules     |
+| antitheft      | Lists configured antitheft rules     |
+| reboot         | Reboot the device                    |
+| reset          | Reset the device to factory settings |
+| relay_state    | 0 off 1 on                           |
+| nightmodeon    | Turn on the plug led                 |
+| nightmodeoff   | Turn off the plug led                |
+| currentRunTime | return current time in second since  |
+|                | the relay_state is 1                 |
 
 
 More advanced commands such as creating or editing rules can be issued using the `-j` flag by providing the full JSON string for the command. Please consult [tplink-smarthome-commands.txt](tplink-smarthome-commands.txt) for a comprehensive list of commands.
