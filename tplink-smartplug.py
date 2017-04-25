@@ -22,6 +22,7 @@
 import socket
 import argparse
 import json
+import time
 
 version = 0.1
 
@@ -35,26 +36,28 @@ def validIP(ip):
 
 # Predefined Smart Plug Commands
 # For a full list of commands, consult tplink_commands.txt
-commands = {'info'             : '{"system":{"get_sysinfo":{}}}',
-			'on'               : '{"system":{"set_relay_state":{"state":1}}}',
-			'off'              : '{"system":{"set_relay_state":{"state":0}}}',
-			'cloudinfo'        : '{"cnCloud":{"get_info":{}}}',
-			'wlanscan'         : '{"netif":{"get_scaninfo":{"refresh":0}}}',
-			'time'             : '{"time":{"get_time":{}}}',
-			'schedule'         : '{"schedule":{"get_rules":{}}}',
-			'countdown'        : '{"count_down":{"get_rules":{}}}',
-			'antitheft'        : '{"anti_theft":{"get_rules":{}}}',
-			'reboot'           : '{"system":{"reboot":{"delay":1}}}',
-			'reset'            : '{"system":{"reset":{"delay":1}}}',
-            'relay_state'      : '{"system":{"get_sysinfo":{}}}',
-            'nightmodeon'      : '{"system":{"set_led_off":{"off":1}}}',
-            'nightmodeoff'     : '{"system":{"set_led_off":{"off":0}}}',
-            'realtimeVoltage'  : '{"emeter":{"get_realtime":{}}}',
-            'EMeterVGain'      : '{"emeter":{"get_vgain_igain":{}}}',
-            'currentRunTime'   : '{"system":{"get_sysinfo":{}}}',
-            'currentPower'     : '{"emeter":{"get_realtime":{}}}',
-            'voltage'          : '{"emeter":{"get_realtime":{}}}',
-            'dailyConsumption' : '{"emeter":{"get_realtime":{}}}'
+commands = {'info'                 : '{"system":{"get_sysinfo":{}}}',
+			'on'                   : '{"system":{"set_relay_state":{"state":1}}}',
+			'off'                  : '{"system":{"set_relay_state":{"state":0}}}',
+			'cloudinfo'            : '{"cnCloud":{"get_info":{}}}',
+			'wlanscan'             : '{"netif":{"get_scaninfo":{"refresh":0}}}',
+			'time'                 : '{"time":{"get_time":{}}}',
+			'schedule'             : '{"schedule":{"get_rules":{}}}',
+			'countdown'            : '{"count_down":{"get_rules":{}}}',
+			'antitheft'            : '{"anti_theft":{"get_rules":{}}}',
+			'reboot'               : '{"system":{"reboot":{"delay":1}}}',
+			'reset'                : '{"system":{"reset":{"delay":1}}}',
+            'relay_state'          : '{"system":{"get_sysinfo":{}}}',
+            'nightmodeon'          : '{"system":{"set_led_off":{"off":1}}}',
+            'nightmodeoff'         : '{"system":{"set_led_off":{"off":0}}}',
+            'realtimeVoltage'      : '{"emeter":{"get_realtime":{}}}',
+            'EMeterVGain'          : '{"emeter":{"get_vgain_igain":{}}}',
+            'currentRunTime'       : '{"system":{"get_sysinfo":{}}}',
+            'currentPower'         : '{"emeter":{"get_realtime":{}}}',
+            'voltage'              : '{"emeter":{"get_realtime":{}}}',
+            'dailyConsumption'     : '{"emeter":{"get_realtime":{}}}',
+            'gettime'              : '{"time":{"get_time":null}}',
+            'currentRunTimeHour'   : '{"system":{"get_sysinfo":{}}}',
 }
 
 # Encryption and Decryption of TP-Link Smart Home Protocol
@@ -118,6 +121,8 @@ try:
 		print json.loads(decrypt(data[4:]))['system']['get_sysinfo']['relay_state']
 	elif args.command  == "currentRunTime":
 		print json.loads(decrypt(data[4:]))['system']['get_sysinfo']['on_time']
+	elif args.command  == "currentRunTimeHour":
+		print time.strftime('%H:%M:%S', time.gmtime(json.loads(decrypt(data[4:]))['system']['get_sysinfo']['on_time']))
 	elif args.command  == "currentPower":
 		print json.loads(decrypt(data[4:]))['emeter']['get_realtime']['power']
 	elif args.command  == "voltage":
