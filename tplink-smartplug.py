@@ -56,7 +56,7 @@ commands = {'info'                 : '{"system":{"get_sysinfo":{}}}',
             'currentPower'         : '{"emeter":{"get_realtime":{}}}',
             'voltage'              : '{"emeter":{"get_realtime":{}}}',
             'dailyConsumption'     : '{"emeter":{"get_realtime":{}}}',
-            'gettime'              : '{"time":{"get_time":null}}',
+            'gettime'              : '{"system":{"get_sysinfo":{}}}',
             'currentRunTimeHour'   : '{"system":{"get_sysinfo":{}}}',
 }
 
@@ -88,8 +88,23 @@ def parsecurrentRunTime(string):
 	print json.loads(string)['system']['get_sysinfo']['on_time']
 	return jsonObj['system']['get_sysinfo']['on_time']
 	
-	
-	
+def decoupe(seconde):
+    day=seconde / 86400
+    seconde %=86400
+    heure=seconde /3600
+    seconde %= 3600
+    minute = seconde/60
+    seconde%=60
+    if( day<10) :
+		day = "0"+ str(day)
+    if(heure <10) :
+		heure = "0"+ str(heure)
+    if(minute <10) :
+		minute = "0"+ str(minute)
+    if(seconde <10) :
+        seconde = "0"+ str(seconde)
+    return (day,heure,minute,seconde)
+
 
 # Parse commandline arguments
 parser = argparse.ArgumentParser(description="TP-Link Wi-Fi Smart Plug Client v" + str(version))
@@ -122,7 +137,7 @@ try:
 	elif args.command  == "currentRunTime":
 		print json.loads(decrypt(data[4:]))['system']['get_sysinfo']['on_time']
 	elif args.command  == "currentRunTimeHour":
-		print time.strftime('%H:%M:%S', time.gmtime(json.loads(decrypt(data[4:]))['system']['get_sysinfo']['on_time']))
+		print "%s:%s:%s:%s" % decoupe(json.loads(decrypt(data[4:]))['system']['get_sysinfo']['on_time'])
 	elif args.command  == "currentPower":
 		print json.loads(decrypt(data[4:]))['emeter']['get_realtime']['power']
 	elif args.command  == "voltage":
