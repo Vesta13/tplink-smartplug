@@ -23,6 +23,7 @@ import socket
 import argparse
 import json
 import time
+import datetime
 
 version = 0.1
 
@@ -32,7 +33,13 @@ def validIP(ip):
 		socket.inet_pton(socket.AF_INET, ip)
 	except socket.error:
 		parser.error("Invalid IP Address.")
-	return ip 
+	return ip
+
+# get month and year for dailyConsumption
+date = datetime.datetime.now()
+month = date.month
+year = date.year
+dailyconsumptionCommand = str('{"emeter":{"get_daystat":{"month":') + str(month) + str(',"year":') +str(year) +str("}}}")
 
 # Predefined Smart Plug Commands
 # For a full list of commands, consult tplink_commands.txt
@@ -55,10 +62,11 @@ commands = {'info'                 : '{"system":{"get_sysinfo":{}}}',
             'currentRunTime'       : '{"system":{"get_sysinfo":{}}}',
             'currentPower'         : '{"emeter":{"get_realtime":{}}}',
             'voltage'              : '{"emeter":{"get_realtime":{}}}',
-            'dailyConsumption'     : '{"emeter":{"get_realtime":{}}}',
-            'gettime'              : '{"system":{"get_sysinfo":{}}}',
+            'dailyConsumption'     : dailyconsumptionCommand,
+            'gettime'              : '{"emeter":{"get_daystat":{"month":4,"year":2017}}}',
             'currentRunTimeHour'   : '{"system":{"get_sysinfo":{}}}',
 }
+
 
 # Encryption and Decryption of TP-Link Smart Home Protocol
 # XOR Autokey Cipher with starting key = 171
@@ -106,6 +114,18 @@ def decoupe(seconde):
     return (day,heure,minute,seconde)
 
 
+# get daily consumption from get_daystat command
+def dailyConsumption(string):
+	result = ""
+	jsonObj = json.loads(string)
+	for x in jsonObj['emeter']['get_daystat']['day_list']:
+		result = x['energy']
+	return result
+
+#return json.loads(string)['emeter']['get_daystat']['day_list']
+
+
+
 # Parse commandline arguments
 parser = argparse.ArgumentParser(description="TP-Link Wi-Fi Smart Plug Client v" + str(version))
 parser.add_argument("-t", "--target", metavar="<ip>", required=True, help="Target IP Address", type=validIP)
@@ -143,9 +163,11 @@ try:
 	elif args.command  == "voltage":
 		print json.loads(decrypt(data[4:]))['emeter']['get_realtime']['voltage']
 	elif args.command  == "dailyConsumption":
-		print json.loads(decrypt(data[4:]))['emeter']['get_realtime']['total']
-
-
+		print dailyConsumption(decrypt(data[4:]))
+	elif args.command  == "gettime":
+		print "Sent:     ", cmd
+		print "Received: ", decrypt(data[4:])
+		print dailyConsumption(decrypt(data[4:]))
 	else :
 		print "Sent:     ", cmd
 		print "Received: ", decrypt(data[4:])
