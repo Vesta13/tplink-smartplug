@@ -10,6 +10,7 @@ Thank's to softScheck GmbH for this python client
 - add return for currentPower in w
 - add return for voltage in v
 - add total current dailyConsumption in kwh
+- add resert emeter counter
 
 
 ## tplink-smartplug.py ##
@@ -61,6 +62,8 @@ Provide the target IP using `-t` and a command to send using either `-c` or `-j`
 |currentPower        | return currentPower in w             |
 |voltage             | return current Voltage               |
 |dailyConsumption    | retunr current daily consumption Kwh |
+|resetcounter        | retunr emeter counter                |
+
 
 More advanced commands such as creating or editing rules can be issued using the `-j` flag by providing the full JSON string for the command. Please consult [tplink-smarthome-commands.txt](tplink-smarthome-commands.txt) for a comprehensive list of commands.
 

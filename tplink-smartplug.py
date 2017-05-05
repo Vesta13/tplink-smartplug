@@ -65,6 +65,7 @@ commands = {'info'                 : '{"system":{"get_sysinfo":{}}}',
             'dailyConsumption'     : dailyconsumptionCommand,
             'gettime'              : '{"emeter":{"get_daystat":{"month":4,"year":2017}}}',
             'currentRunTimeHour'   : '{"system":{"get_sysinfo":{}}}',
+            'resetcounter'         : '{"emeter":{"erase_emeter_stat":null}}'
 }
 
 
