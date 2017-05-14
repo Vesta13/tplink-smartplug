@@ -58,11 +58,13 @@ Provide the target IP using `-t` and a command to send using either `-c` or `-j`
 |                    | the relay_state is 1                 |
 | currentRunTimeHour | return current time in HH:MM:SS      |
 |                    | since the relay_state is 1           |
-
+|                    |										|
 |currentPower        | return currentPower in w             |
 |voltage             | return current Voltage               |
-|dailyConsumption    | retunr current daily consumption Kwh |
-|resetcounter        | retunr emeter counter                |
+|dailyConsumption    | return current daily consumption Kwh |
+|totalConsumption    | return total from last counter reset |
+|                    |	consumption Kwh                     |
+|resetcounter        | return emeter counter                |
 
 
 More advanced commands such as creating or editing rules can be issued using the `-j` flag by providing the full JSON string for the command. Please consult [tplink-smarthome-commands.txt](tplink-smarthome-commands.txt) for a comprehensive list of commands.
